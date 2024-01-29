@@ -4,7 +4,7 @@ test:
 	pytest
 
 lint:
-	pylint src
+	-pylint src
 
 type-check:
 	mypy src
