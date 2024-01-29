@@ -1,0 +1,7 @@
+pytest
+mypy
+black
+pylint
+pandas
+pandas-stubs
+pyarrow
