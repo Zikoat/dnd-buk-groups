@@ -8,24 +8,15 @@ import pandas as pd
 print("test")
 
 
-FILE_PATH = "2024-01-29T16_27_24.442Z.csv"
+FILE_PATH = "src/2024-01-29T16_27_24.442Z.csv"
 data = pd.read_csv(FILE_PATH)
 
-# Splitting the combined column (which is in tuple format) into ID and Church
-data["ID"], data["Church"] = zip(*data.index.to_series())
-
-# Reset the index of the dataframe
-data.reset_index(drop=True, inplace=True)
-
-data[["Norsk", "Erfaring"]] = data["Age"].str.extract(
-    r"norsk: (yes|no)\n\|erfaring: (yes|no)"
+data["Answers"] = data["Answers"].str.replace("\n\|", "|", regex=True)
+data[["Norsk", "Erfaring"]] = data["Answers"].str.extract(
+    "norsk: (yes|no)\|erfaring: (yes|no)"
 )
 
-# Handling NaN values in the "Answers" column
-data["Answers"].fillna(False, inplace=True)
-
-# Dropping the original 'Age' column as it's now redundant
-data.drop("Age", axis=1, inplace=True)
+data.drop("Answers", axis=1, inplace=True)
 
 # Displaying the cleaned data
 print(data)
