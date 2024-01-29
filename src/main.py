@@ -36,11 +36,13 @@ data["Erfaring"] = (
 
 data.drop("Answers", axis=1, inplace=True)
 data.drop("NotUsed", axis=1, inplace=True)
+data.drop("Person", axis=1, inplace=True)
 
 expected_first_row = {
     "Id": "01247fd1-a130-4244-a336-378e6559f956",
     "Church": "Bergen",
-    "Person": "Klara Skutle",
+    # "Person": "Klara Skutle",
+    "Person": None,
     "Gender": "F",
     "Age": 13,
     "Timeslot": "All days",
@@ -81,3 +83,9 @@ data.info()
 
 print("\nUnique Values in 'Type' Column:")
 print(data["Type"].unique())
+
+# Example: Creating gender-balanced teams
+TEAM_SIZE = 5  # Adjust as per requirements
+data["Team"] = data.groupby("Gender").cumcount() // (TEAM_SIZE // 2) + 1
+
+print(data.groupby(["Team", "Gender"]).size())
